@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Player - Basic Example</title>
+  <link rel="stylesheet" href="../src/shorts-player.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: #666;
+      margin-bottom: 32px;
+    }
+
+    .player-container {
+      max-width: 300px;
+      margin: 0 auto 40px;
+    }
+
+    .controls {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #f5f5f5;
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shorts Player - Basic Example</h1>
+  <p>Single instance with external controls</p>
+
+  <div class="player-container">
+    <shorts-player
+      id="player1"
+      src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+      poster="https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217"
+      aspect-ratio="16/9">
+    </shorts-player>
+
+    <div class="controls">
+      <button id="playBtn">Play</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="reloadBtn">Reload</button>
+    </div>
+
+    <div class="status" id="status">
+      Status: Initializing...
+    </div>
+  </div>
+
+  <!-- Component will be loaded here -->
+  <script type="module">
+    // Wait for component to load
+    // TODO: Import component when implemented
+    // import '../src/shorts-player.js';
+
+    const player = document.getElementById('player1');
+    const status = document.getElementById('status');
+
+    // External controls
+    document.getElementById('playBtn').addEventListener('click', () => {
+      if (player.play) {
+        player.play();
+      }
+    });
+
+    document.getElementById('pauseBtn').addEventListener('click', () => {
+      if (player.pause) {
+        player.pause();
+      }
+    });
+
+    document.getElementById('reloadBtn').addEventListener('click', () => {
+      if (player.reload) {
+        player.reload();
+      }
+    });
+
+    // Event listeners
+    player.addEventListener('play', () => {
+      status.textContent = 'Status: Playing';
+    });
+
+    player.addEventListener('pause', () => {
+      status.textContent = 'Status: Paused';
+    });
+
+    player.addEventListener('loadeddata', () => {
+      status.textContent = 'Status: Loaded';
+    });
+
+    player.addEventListener('error', (e) => {
+      status.textContent = `Status: Error - ${e.detail?.message || 'Unknown'}`;
+    });
+
+    player.addEventListener('visibilitychange', (e) => {
+      const { visible, visibilityRatio, viewportOccupancy } = e.detail;
+      status.textContent = `Visibility: ${visible ? 'Yes' : 'No'} | Ratio: ${(visibilityRatio * 100).toFixed(0)}% | Viewport: ${(viewportOccupancy * 100).toFixed(0)}%`;
+    });
+  </script>
+</body>
+</html>

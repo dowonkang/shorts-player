@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Player - Scroll Feed</title>
+  <link rel="stylesheet" href="../src/shorts-player.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #000;
+    }
+
+    .feed {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .player-wrapper {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      scroll-snap-align: start;
+    }
+
+    shorts-player {
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .info {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: monospace;
+      z-index: 1000;
+    }
+
+    .scroll-indicator {
+      position: fixed;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      z-index: 1000;
+    }
+
+    @media (max-width: 600px) {
+      .player-wrapper {
+        padding: 0;
+      }
+
+      shorts-player {
+        max-width: 100%;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="info" id="info">
+    Loading...
+  </div>
+
+  <div class="scroll-indicator">
+    ↕ Scroll
+  </div>
+
+  <div class="feed" id="feed">
+    <!-- 20+ player instances will be injected here -->
+  </div>
+
+  <script type="module">
+    // TODO: Import component when implemented
+    // import '../src/shorts-player.js';
+
+    // Sample video sources (using public test videos)
+    const videos = [
+      {
+        src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+        poster: 'https://peach.blender.org/wp-content/uploads/title_anouncement.jpg?x11217'
+      },
+      {
+        src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+        poster: 'https://orange.blender.org/wp-content/themes/orange/images/media/gallery/s3.jpg'
+      },
+      {
+        src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+      },
+      {
+        src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4'
+      },
+      {
+        src: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4'
+      },
+    ];
+
+    // Create 20+ instances by repeating videos
+    const feed = document.getElementById('feed');
+    const info = document.getElementById('info');
+
+    for (let i = 0; i < 20; i++) {
+      const video = videos[i % videos.length];
+      const wrapper = document.createElement('div');
+      wrapper.className = 'player-wrapper';
+
+      const player = document.createElement('shorts-player');
+      player.setAttribute('src', video.src);
+      if (video.poster) {
+        player.setAttribute('poster', video.poster);
+      }
+      player.setAttribute('aspect-ratio', '9/16');
+      player.id = `player-${i}`;
+
+      wrapper.appendChild(player);
+      feed.appendChild(wrapper);
+
+      // Listen to events for debugging
+      player.addEventListener('play', () => {
+        info.textContent = `Player ${i} playing`;
+      });
+
+      player.addEventListener('pause', () => {
+        info.textContent = `Player ${i} paused`;
+      });
+    }
+
+    // Performance monitoring
+    let frameCount = 0;
+    let lastTime = performance.now();
+
+    function measureFPS() {
+      const now = performance.now();
+      frameCount++;
+
+      if (now >= lastTime + 1000) {
+        const fps = Math.round((frameCount * 1000) / (now - lastTime));
+        info.textContent = `FPS: ${fps} | Players: 20 | Scroll to test`;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      requestAnimationFrame(measureFPS);
+    }
+
+    measureFPS();
+  </script>
+</body>
+</html>

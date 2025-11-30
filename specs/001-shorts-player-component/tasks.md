@@ -35,14 +35,14 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Setup Tasks
 
-- [ ] [T001] [P0] Initialize project directory structure (src/, tests/unit/, tests/integration/, tests/stress/, examples/, dist/)
-- [ ] [T002] [P0] Create package.json with dependencies: hls.js, @playwright/test
-- [ ] [T003] [P0] Install Playwright and configure browsers (Chrome, Firefox, Safari)
-- [ ] [T004] [P0] Create playwright.config.js with component testing enabled
-- [ ] [T005] [P0] Create global CSS stylesheet src/shorts-player.css with host element skeleton styles (research.md:50-92)
-- [ ] [T006] [P0] Verify global CSS prevents FOUC - shorts-player:not(:defined) shows grey gradient
-- [ ] [T007] [P0] Create basic example page examples/basic.html for manual testing
-- [ ] [T008] [P0] Create scroll feed example examples/scroll-feed.html with 20+ instances
+- [X] [T001] [P0] Initialize project directory structure (src/, tests/unit/, tests/integration/, tests/stress/, examples/, dist/)
+- [X] [T002] [P0] Create package.json with dependencies: hls.js, @playwright/test
+- [X] [T003] [P0] Install Playwright and configure browsers (Chrome, Firefox, Safari)
+- [X] [T004] [P0] Create playwright.config.js with component testing enabled
+- [X] [T005] [P0] Create global CSS stylesheet src/shorts-player.css with host element skeleton styles (research.md:50-92)
+- [X] [T006] [P0] Verify global CSS prevents FOUC - shorts-player:not(:defined) shows grey gradient
+- [X] [T007] [P0] Create basic example page examples/basic.html for manual testing
+- [X] [T008] [P0] Create scroll feed example examples/scroll-feed.html with 20+ instances
 
 **Success Criteria**: `npm test` runs (no tests yet), examples load with grey gradient backgrounds
 

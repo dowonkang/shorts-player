@@ -1,0 +1,37 @@
+{
+  "name": "shorts-player",
+  "version": "0.1.0",
+  "description": "High-performance web component for auto-playing short-form videos triggered by scroll position",
+  "type": "module",
+  "main": "dist/shorts-player.min.js",
+  "files": [
+    "dist/",
+    "src/"
+  ],
+  "scripts": {
+    "test": "playwright test",
+    "test:unit": "playwright test tests/unit",
+    "test:integration": "playwright test tests/integration",
+    "test:stress": "playwright test tests/stress",
+    "build": "echo 'Build script to be implemented'",
+    "lint": "echo 'Linting to be configured if needed'"
+  },
+  "keywords": [
+    "web-component",
+    "video-player",
+    "scroll-trigger",
+    "hls",
+    "performance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "hls.js": "^1.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
