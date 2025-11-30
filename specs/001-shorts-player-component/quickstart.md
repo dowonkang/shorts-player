@@ -457,10 +457,9 @@ setInterval(() => {
 project/
 ├── index.html              # Demo page
 ├── src/
-│   ├── shorts-player.js    # Main component
+│   ├── shorts-player.js    # Main component (includes inline HLS logic)
 │   ├── shorts-player.css   # Global styles
 │   ├── intersection-manager.js
-│   ├── hls-manager.js
 │   └── video-pool.js
 ├── examples/
 │   ├── basic.html

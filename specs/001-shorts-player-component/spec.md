@@ -17,8 +17,8 @@ A user scrolls through a feed of short-form videos. As each video enters the vie
 
 **Acceptance Scenarios**:
 
-1. **Given** a page with multiple video players, **When** user scrolls and a video becomes more than 50% visible AND occupies more than 50% of the viewport height, **Then** the video automatically starts playing
-2. **Given** a video is currently playing, **When** user scrolls so that either the video is less than 50% visible OR occupies less than 50% of viewport height, **Then** the video automatically pauses
+1. **Given** a page with multiple video players, **When** user scrolls and a video meets either condition: (a) more than 50% of the video area is visible, OR (b) the video is taller than the viewport AND occupies more than 50% of the viewport height, **Then** the video automatically starts playing
+2. **Given** a video is currently playing, **When** user scrolls so that both conditions fail: (a) less than 50% of the video area is visible, AND (b) either the video is not taller than viewport OR occupies less than 50% of viewport height, **Then** the video automatically pauses
 3. **Given** multiple video players on a page, **When** user performs super-fast scrolling (rapid scroll wheel or gesture fling), **Then** scrolling remains smooth at 60fps with no frame drops
 4. **Given** user is scrolling quickly through videos, **When** scrolling through empty space between videos, **Then** skeleton UI (grey gradient) is immediately visible with no white/blank page flashes
 5. **Given** a video is loading, **When** the video hasn't loaded yet but is in viewport, **Then** a grey gradient skeleton placeholder is shown immediately
@@ -61,8 +61,8 @@ A user's device encounters videos in HLS (HTTP Live Streaming) format. The playe
 ### Functional Requirements
 
 - **FR-001**: Component MUST be implemented as a native Web Component (Custom Element) with no framework dependencies
-- **FR-002**: Component MUST auto-play video when both conditions are met: (1) more than 50% of player area is visible in viewport AND (2) player occupies more than 50% of viewport height
-- **FR-003**: Component MUST auto-pause video when either condition fails: (1) less than 50% of player area visible OR (2) player occupies less than 50% of viewport height
+- **FR-002**: Component MUST auto-play video when either condition is met: (1) more than 50% of player area is visible in viewport, OR (2) player is taller than viewport AND occupies more than 50% of viewport height
+- **FR-003**: Component MUST auto-pause video when both conditions fail: (1) less than 50% of player area visible, AND (2) either player is not taller than viewport OR occupies less than 50% of viewport height
 - **FR-004**: Component MUST use Intersection Observer API for viewport detection (NOT scroll event listeners)
 - **FR-005**: Component MUST display a simple grey gradient skeleton UI as placeholder before video loads and when video is not playing
 - **FR-006**: Component MUST maintain skeleton UI visibility during fast scrolling to prevent white/blank page flashes
@@ -101,7 +101,7 @@ A user's device encounters videos in HLS (HTTP Live Streaming) format. The playe
 - **SC-005**: Memory usage remains stable (no growth greater than 10%) after scrolling through 100+ video instances
 - **SC-006**: Component successfully plays HLS streams in Chrome, Firefox, and Safari without errors
 - **SC-007**: Component handles 100+ simultaneous instances on a single page without crashing or degrading scroll performance
-- **SC-008**: Component gracefully handles network errors and invalid video sources with user-friendly error states (no console spam)
+- **SC-008**: Component gracefully handles network errors and invalid video sources by dispatching error events for external handling (no console spam, no built-in error UI)
 - **SC-009**: Component loads and initializes in under 50KB bundle size (excluding hls.js, which loads conditionally)
 - **SC-010**: Skeleton UI displays instantly on page load with no flash of unstyled content
 

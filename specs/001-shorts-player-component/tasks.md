@@ -243,7 +243,7 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### HLS Detection & Conditional Loading
 
-- [ ] [T128] [P2] [US2] TEST: Write Safari native HLS detection test in tests/unit/hls-manager.spec.js
+- [ ] [T128] [P2] [US2] TEST: Write Safari native HLS detection test in tests/unit/shorts-player.spec.js
 - [ ] [T129] [P2] [US2] Verify test fails (RED)
 - [ ] [T130] [P2] [US2] IMPLEMENT: Add _canPlayNativeHLS() method checking canPlayType('application/vnd.apple.mpegurl')
 - [ ] [T131] [P2] [US2] Verify test passes (GREEN)
@@ -304,7 +304,7 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 **Dependencies**: Phase 3 complete
 
-**Estimated Tasks**: 20
+**Estimated Tasks**: 22
 
 ### Validation & Error States
 
@@ -331,6 +331,8 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 - [ ] [T180] [P1] [US1] Verify VideoPool handles concurrent acquire() calls
 - [ ] [T181] [P2] [US2] TEST: Write test for HLS manifest load failure (network error)
 - [ ] [T182] [P2] [US2] IMPLEMENT: Dispatch 'error' CustomEvent with type:'hls' and error message
+- [ ] [T183] [P2] [US2] TEST: Write test for HLS stream interruption during playback (network drop mid-stream)
+- [ ] [T184] [P2] [US2] IMPLEMENT: Listen for HLS network errors during playback, dispatch 'error' event with type:'stream-interruption'
 
 **Success Criteria**: All error scenarios handled gracefully, no crashes, edge cases covered
 
@@ -346,19 +348,19 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Examples
 
-- [ ] [T183] [P1] Update examples/basic.html with poster attribute example
-- [ ] [T184] [P1] Update examples/scroll-feed.html with 100+ instances for stress testing
-- [ ] [T185] [P2] Create examples/hls-demo.html with HLS stream sources (.m3u8)
-- [ ] [T186] [P1] Create examples/external-controls.html showing play/pause buttons
-- [ ] [T187] [P1] Create examples/custom-styles.html showing CSS custom properties
-- [ ] [T188] [P1] Create examples/analytics.html showing event listener integration
-- [ ] [T189] [P1] Create examples/error-handling.html showing error recovery UI
+- [ ] [T185] [P1] Update examples/basic.html with poster attribute example
+- [ ] [T186] [P1] Update examples/scroll-feed.html with 100+ instances for stress testing
+- [ ] [T187] [P2] Create examples/hls-demo.html with HLS stream sources (.m3u8)
+- [ ] [T188] [P1] Create examples/external-controls.html showing play/pause buttons
+- [ ] [T189] [P1] Create examples/custom-styles.html showing CSS custom properties
+- [ ] [T190] [P1] Create examples/analytics.html showing event listener integration
+- [ ] [T191] [P1] Create examples/error-handling.html showing error recovery UI
 
 ### Build & Distribution
 
-- [ ] [T190] [P0] Create build script to bundle src/shorts-player.js to dist/shorts-player.min.js
-- [ ] [T191] [P0] Verify bundle size <50KB (excluding hls.js) (SC-009)
-- [ ] [T192] [P0] Run all tests in CI mode - verify 100% pass rate
+- [ ] [T192] [P0] Create build script to bundle src/shorts-player.js to dist/shorts-player.min.js
+- [ ] [T193] [P0] Verify bundle size <50KB (excluding hls.js) (SC-009)
+- [ ] [T194] [P0] Run all tests in CI mode - verify 100% pass rate
 
 **Success Criteria**: All examples functional, bundle size meets requirements, all tests pass
 
@@ -439,9 +441,9 @@ Phase 1 (Foundational - BLOCKS all user stories)
 | Phase 1: Foundational | 24 | US1+US2 (BLOCKS both) | Not Started |
 | Phase 2: US1 (MVP) | 95 | US1 (P1) | Not Started |
 | Phase 3: US2 (HLS) | 35 | US2 (P2) | Not Started |
-| Phase 4: Error Handling | 20 | US1+US2 | Not Started |
+| Phase 4: Error Handling | 22 | US1+US2 | Not Started |
 | Phase 5: Polish | 10 | N/A (Documentation) | Not Started |
-| **TOTAL** | **192** | - | **0% Complete** |
+| **TOTAL** | **194** | - | **0% Complete** |
 
 ---
 
@@ -453,8 +455,8 @@ Phase 1 (Foundational - BLOCKS all user stories)
 2. **Move to Phase 1**: Complete T009-T032 (foundational components)
 3. **Implement US1 (MVP)**: Complete Phase 2 (T033-T127) - CRITICAL PATH
 4. **Add HLS Support**: Complete Phase 3 (T128-T162)
-5. **Harden with Error Handling**: Complete Phase 4 (T163-T182)
-6. **Polish**: Complete Phase 5 (T183-T192)
+5. **Harden with Error Handling**: Complete Phase 4 (T163-T184)
+6. **Polish**: Complete Phase 5 (T185-T194)
 
 ### TDD Workflow (MANDATORY)
 

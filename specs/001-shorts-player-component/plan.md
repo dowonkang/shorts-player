@@ -76,17 +76,21 @@ specs/[###-feature]/
 ```text
 src/
 ├── shorts-player.js          # Main Web Component definition
-├── intersection-manager.js   # Intersection Observer logic
-├── hls-manager.js           # HLS.js integration & lifecycle
-└── skeleton-ui.js           # Grey gradient skeleton placeholder
+├── shorts-player.css         # Global styles (skeleton gradient, FOUC prevention)
+├── intersection-manager.js   # Intersection Observer singleton logic
+└── video-pool.js            # Video element pooling singleton
 
 tests/
 ├── unit/
+│   ├── shared-template.spec.js
 │   ├── intersection-manager.spec.js
-│   ├── hls-manager.spec.js
-│   └── skeleton-ui.spec.js
-├── integration/
+│   ├── video-pool.spec.js
 │   └── shorts-player.spec.js
+├── integration/
+│   ├── auto-play.spec.js
+│   ├── hls-chrome.spec.js
+│   ├── hls-firefox.spec.js
+│   └── hls-safari.spec.js
 └── stress/
     ├── rapid-scroll.spec.js
     ├── memory-leak.spec.js

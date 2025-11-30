@@ -209,7 +209,8 @@ class VideoIntersectionManager {
 ## 4. HLS.js Integration Strategy
 
 ### Decision
-**Conditional loading with aggressive cleanup**:
+**Inline HLS logic within ShortsPlayer component with conditional loading and aggressive cleanup**:
+- HLS detection and lifecycle methods implemented directly in `shorts-player.js` (no separate manager class)
 - Native HLS for Safari (detect with `canPlayType()`)
 - HLS.js for Chrome/Firefox (detect with `Hls.isSupported()`)
 - Deferred cleanup with 200ms grace period for scroll bounces

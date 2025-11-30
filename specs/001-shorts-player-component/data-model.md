@@ -96,11 +96,13 @@ Represents a single `<shorts-player>` web component instance on the page.
 
 | Property | Validation | Error Behavior |
 |----------|------------|----------------|
-| `src` | Must be valid URL | Console warning, show error state |
+| `src` | Must be valid URL | Dispatch 'error' event, remain on skeleton UI |
 | `src` | Must be .mp4, .webm, or .m3u8 | Console warning, attempt playback anyway |
 | `poster` | Must be valid image URL | Console warning, fall back to skeleton only |
 | `poster` | Should be same aspect ratio as video | No validation, may cause visual jump |
 | `aspectRatio` | Must be valid CSS aspect-ratio syntax | Fall back to default "9/16" |
+
+**Note**: Component does NOT render error UI. All error handling is event-based—external code listens to 'error' events and displays appropriate UI.
 
 #### Relationships
 
