@@ -83,6 +83,16 @@ class ShortsPlayer extends HTMLElement {
     // T067: Remove poster on error (data-model.md:85, 169-174)
     poster.addEventListener('error', () => {
       console.warn(`[ShortsPlayer] Failed to load poster: ${posterUrl}`);
+
+      // T116: Dispatch error event for poster (contracts/component-api.md:371-403)
+      this.dispatchEvent(new CustomEvent('error', {
+        bubbles: true,
+        detail: {
+          type: 'poster',
+          message: `Failed to load poster: ${posterUrl}`
+        }
+      }));
+
       if (poster.parentNode) {
         poster.remove();
       }
@@ -178,6 +188,20 @@ class ShortsPlayer extends HTMLElement {
 
     this._isPlaying = shouldPlay;
     this._isVisible = shouldPlay; // Track visibility state
+
+    // T117: Dispatch 'visibilitychange' event (contracts/component-api.md:405-436)
+    if (entry) {
+      const detail = {
+        visible: shouldPlay,
+        visibilityRatio: entry.intersectionRatio,
+        viewportOccupancy: (entry.intersectionRect.height * entry.intersectionRect.width) /
+                          (entry.rootBounds?.height * entry.rootBounds?.width || 1)
+      };
+      this.dispatchEvent(new CustomEvent('visibilitychange', {
+        bubbles: true,
+        detail
+      }));
+    }
 
     if (shouldPlay) {
       // T091: Cancel cleanup timer on re-entry (scroll bounce)
@@ -285,6 +309,9 @@ class ShortsPlayer extends HTMLElement {
       video.classList.add('loaded');
       video.style.opacity = '1';
 
+      // T115: Dispatch 'loadeddata' event (contracts/component-api.md:347-369)
+      this.dispatchEvent(new Event('loadeddata', { bubbles: true }));
+
       // T080: Remove poster after video starts playing (data-model.md:88, 160-164)
       if (this._posterElement) {
         setTimeout(() => {
@@ -300,6 +327,47 @@ class ShortsPlayer extends HTMLElement {
         console.warn('[ShortsPlayer] Auto-play prevented:', err.message);
       });
     }, { once: true, signal: this._abortController.signal });
+
+    // T111: Dispatch 'play' event (contracts/component-api.md:300-321)
+    video.addEventListener('play', () => {
+      this.dispatchEvent(new Event('play', { bubbles: true }));
+    }, { signal: this._abortController.signal });
+
+    // T113: Dispatch 'pause' event (contracts/component-api.md:323-345)
+    video.addEventListener('pause', () => {
+      this.dispatchEvent(new Event('pause', { bubbles: true }));
+    }, { signal: this._abortController.signal });
+
+    // T116: Dispatch error event for video (contracts/component-api.md:371-403)
+    video.addEventListener('error', () => {
+      const error = video.error;
+      let message = 'Video load error';
+
+      if (error) {
+        switch (error.code) {
+          case error.MEDIA_ERR_ABORTED:
+            message = 'Video load aborted';
+            break;
+          case error.MEDIA_ERR_NETWORK:
+            message = 'Network error while loading video';
+            break;
+          case error.MEDIA_ERR_DECODE:
+            message = 'Video decode error';
+            break;
+          case error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+            message = 'Video format not supported';
+            break;
+        }
+      }
+
+      this.dispatchEvent(new CustomEvent('error', {
+        bubbles: true,
+        detail: {
+          type: 'video',
+          message
+        }
+      }));
+    }, { signal: this._abortController.signal });
 
     this.appendChild(video);
     this._videoElement = video;

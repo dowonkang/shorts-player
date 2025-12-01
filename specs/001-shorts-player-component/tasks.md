@@ -209,14 +209,14 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Custom Events
 
-- [ ] [T110] [P1] [US1] TEST: Write test for 'play' event dispatch
-- [ ] [T111] [P1] [US1] IMPLEMENT: Dispatch 'play' event when video starts playing (contracts/component-api.md:300-321)
-- [ ] [T112] [P1] [US1] TEST: Write test for 'pause' event dispatch
-- [ ] [T113] [P1] [US1] IMPLEMENT: Dispatch 'pause' event when video pauses (contracts/component-api.md:323-345)
-- [ ] [T114] [P1] [US1] TEST: Write test for 'loadeddata' event dispatch
-- [ ] [T115] [P1] [US1] IMPLEMENT: Dispatch 'loadeddata' event (contracts/component-api.md:347-369)
-- [ ] [T116] [P1] [US1] TEST: Write test for 'visibilitychange' event with detail object
-- [ ] [T117] [P1] [US1] IMPLEMENT: Dispatch CustomEvent with {visible, visibilityRatio, viewportOccupancy} (contracts/component-api.md:405-436)
+- [X] [T110] [P1] [US1] TEST: Write test for 'play' event dispatch
+- [X] [T111] [P1] [US1] IMPLEMENT: Dispatch 'play' event when video starts playing (contracts/component-api.md:300-321)
+- [X] [T112] [P1] [US1] TEST: Write test for 'pause' event dispatch
+- [X] [T113] [P1] [US1] IMPLEMENT: Dispatch 'pause' event when video pauses (contracts/component-api.md:323-345)
+- [X] [T114] [P1] [US1] TEST: Write test for 'loadeddata' event dispatch
+- [X] [T115] [P1] [US1] IMPLEMENT: Dispatch 'loadeddata' event (contracts/component-api.md:347-369)
+- [X] [T116] [P1] [US1] TEST: Write test for 'visibilitychange' event with detail object
+- [X] [T117] [P1] [US1] IMPLEMENT: Dispatch CustomEvent with {visible, visibilityRatio, viewportOccupancy} (contracts/component-api.md:405-436)
 
 ### Performance & Stress Testing (US1)
 
