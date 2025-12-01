@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shorts Player - HLS Streaming Demo</title>
+  <link rel="stylesheet" href="../src/shorts-player.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    .header {
+      padding: 20px;
+      background: rgba(0,0,0,0.8);
+      border-bottom: 1px solid #333;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    .detection-info {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      background: rgba(0,0,0,0.9);
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 12px;
+      font-family: monospace;
+      z-index: 1000;
+      max-width: 300px;
+    }
+
+    .detection-info h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #4CAF50;
+    }
+
+    .detection-info .item {
+      margin: 5px 0;
+      padding: 5px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .detection-info .label {
+      color: #888;
+    }
+
+    .detection-info .value {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .feed {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .player-wrapper {
+      margin-bottom: 40px;
+      background: #111;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .player-wrapper h2 {
+      padding: 15px;
+      font-size: 16px;
+      background: #1a1a1a;
+      border-bottom: 1px solid #333;
+    }
+
+    .player-container {
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    shorts-player {
+      width: 100%;
+      max-width: 300px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .events {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.9);
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      max-width: 400px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 12px;
+      font-family: monospace;
+      z-index: 1000;
+    }
+
+    .events h3 {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #2196F3;
+    }
+
+    .events .event {
+      margin: 3px 0;
+      padding: 5px;
+      background: rgba(255,255,255,0.05);
+      border-left: 3px solid #2196F3;
+      padding-left: 8px;
+    }
+
+    .events .event.error {
+      border-left-color: #f44336;
+      color: #ffcccc;
+    }
+
+    .events .event .time {
+      color: #666;
+      font-size: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🎬 HLS Streaming Demo</h1>
+    <p>Testing adaptive bitrate streaming with HLS.js (Chrome/Firefox) and native HLS (Safari)</p>
+  </div>
+
+  <div class="detection-info" id="detection">
+    <h3>🔍 HLS Detection</h3>
+    <div class="item">
+      <span class="label">Browser:</span>
+      <span class="value" id="browser">Detecting...</span>
+    </div>
+    <div class="item">
+      <span class="label">Native HLS:</span>
+      <span class="value" id="native-hls">Detecting...</span>
+    </div>
+    <div class="item">
+      <span class="label">HLS.js Support:</span>
+      <span class="value" id="hlsjs-support">Detecting...</span>
+    </div>
+    <div class="item">
+      <span class="label">Method:</span>
+      <span class="value" id="method">Detecting...</span>
+    </div>
+  </div>
+
+  <div class="events" id="events">
+    <h3>📊 Event Log</h3>
+    <div id="event-list"></div>
+  </div>
+
+  <div class="feed">
+    <div class="player-wrapper">
+      <h2>Test Stream 1 - Big Buck Bunny (Mux)</h2>
+      <div class="player-container">
+        <shorts-player
+          id="player-1"
+          src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
+          poster="https://image.mux.com/x36xhzz/thumbnail.jpg"
+          aspect-ratio="16/9">
+        </shorts-player>
+      </div>
+    </div>
+
+    <div class="player-wrapper">
+      <h2>Test Stream 2 - Tears of Steel (Bitmovin)</h2>
+      <div class="player-container">
+        <shorts-player
+          id="player-2"
+          src="https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
+          aspect-ratio="16/9">
+        </shorts-player>
+      </div>
+    </div>
+
+    <div class="player-wrapper">
+      <h2>Test Stream 3 - Sintel (Apple Demo)</h2>
+      <div class="player-container">
+        <shorts-player
+          id="player-3"
+          src="https://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"
+          aspect-ratio="4/3">
+        </shorts-player>
+      </div>
+    </div>
+  </div>
+
+  <!-- Load HLS.js globally for easier testing -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+  <!-- Load component modules -->
+  <script type="module" src="../src/intersection-manager.js"></script>
+  <script type="module" src="../src/video-pool.js"></script>
+  <script type="module" src="../src/shorts-player.js"></script>
+
+  <script type="module">
+    // Detect browser and HLS support
+    const userAgent = navigator.userAgent;
+    let browserName = 'Unknown';
+
+    if (userAgent.includes('Chrome')) browserName = 'Chrome';
+    else if (userAgent.includes('Firefox')) browserName = 'Firefox';
+    else if (userAgent.includes('Safari')) browserName = 'Safari';
+    else if (userAgent.includes('Edge')) browserName = 'Edge';
+
+    document.getElementById('browser').textContent = browserName;
+
+    // Check native HLS support
+    const video = document.createElement('video');
+    const nativeHLS = video.canPlayType('application/vnd.apple.mpegurl') !== '';
+    document.getElementById('native-hls').textContent = nativeHLS ? 'Yes ✅' : 'No ❌';
+
+    // Check HLS.js support
+    const hlsjsSupport = typeof window.Hls !== 'undefined' && window.Hls.isSupported();
+    document.getElementById('hlsjs-support').textContent = hlsjsSupport ? 'Yes ✅' : 'No ❌';
+
+    // Determine method
+    let method = 'Unknown';
+    if (nativeHLS) {
+      method = 'Safari Native HLS';
+    } else if (hlsjsSupport) {
+      method = 'HLS.js';
+    } else {
+      method = 'Not Supported';
+    }
+    document.getElementById('method').textContent = method;
+
+    // Event logging
+    const eventList = document.getElementById('event-list');
+    const maxEvents = 50;
+    const events = [];
+
+    function logEvent(playerId, eventType, detail = '') {
+      const timestamp = new Date().toLocaleTimeString();
+      const eventDiv = document.createElement('div');
+      eventDiv.className = `event ${eventType === 'error' ? 'error' : ''}`;
+
+      let detailStr = '';
+      if (detail && typeof detail === 'object') {
+        detailStr = ` - ${JSON.stringify(detail)}`;
+      } else if (detail) {
+        detailStr = ` - ${detail}`;
+      }
+
+      eventDiv.innerHTML = `
+        <span class="time">${timestamp}</span>
+        [${playerId}] ${eventType}${detailStr}
+      `;
+
+      events.unshift(eventDiv);
+      if (events.length > maxEvents) {
+        events.pop();
+      }
+
+      eventList.innerHTML = '';
+      events.forEach(e => eventList.appendChild(e));
+    }
+
+    // Listen to all players
+    const players = document.querySelectorAll('shorts-player');
+    players.forEach(player => {
+      const playerId = player.id;
+
+      player.addEventListener('play', () => {
+        logEvent(playerId, 'play');
+      });
+
+      player.addEventListener('pause', () => {
+        logEvent(playerId, 'pause');
+      });
+
+      player.addEventListener('loadeddata', () => {
+        logEvent(playerId, 'loadeddata');
+      });
+
+      player.addEventListener('error', (e) => {
+        logEvent(playerId, 'error', e.detail);
+      });
+
+      player.addEventListener('visibilitychange', (e) => {
+        if (e.detail.visible) {
+          logEvent(playerId, 'visible', `${(e.detail.visibilityRatio * 100).toFixed(0)}%`);
+        }
+      });
+    });
+
+    logEvent('system', 'ready', `Method: ${method}`);
+  </script>
+</body>
+</html>

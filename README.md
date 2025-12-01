@@ -2,9 +2,9 @@
 
 A high-performance, scroll-triggered auto-play video player web component optimized for TikTok/Instagram-style vertical video feeds.
 
-[![Tests](https://img.shields.io/badge/tests-58%2F64%20passing-brightgreen)]()
-[![Coverage](https://img.shields.io/badge/coverage-91%25-brightgreen)]()
-[![Phase 2](https://img.shields.io/badge/Phase%202-100%25%20complete-success)]()
+[![Tests](https://img.shields.io/badge/tests-65%2F76%20passing-brightgreen)]()
+[![Coverage](https://img.shields.io/badge/coverage-86%25-brightgreen)]()
+[![Phase 3](https://img.shields.io/badge/Phase%203-90%25%20complete-blue)]()
 
 ---
 
@@ -12,6 +12,7 @@ A high-performance, scroll-triggered auto-play video player web component optimi
 
 - ✅ **Auto-play on scroll** - Videos play when >50% visible
 - ✅ **Auto-pause on scroll** - Videos pause when scrolled away
+- ✅ **HLS streaming** - Adaptive bitrate with HLS.js (Chrome/Firefox) or native (Safari)
 - ✅ **Memory efficient** - Video element pooling prevents memory leaks
 - ✅ **Poster images** - Smooth skeleton → poster → video transitions
 - ✅ **Events** - Full event API for analytics and control
@@ -56,13 +57,14 @@ python3 -m http.server 8080
 # Open in browser
 # http://localhost:8080/examples/basic.html
 # http://localhost:8080/examples/scroll-feed.html
+# http://localhost:8080/examples/hls-stream.html (HLS streaming demo)
 ```
 
 ### 3. Run Tests
 
 ```bash
 npm install
-npm test  # 58/64 tests passing (91%)
+npm test  # 65/76 tests passing (86%)
 ```
 
 ---
@@ -72,12 +74,24 @@ npm test  # 58/64 tests passing (91%)
 ### Attributes
 
 ```html
+<!-- MP4/WebM video -->
 <shorts-player
-  src="video.mp4"           <!-- Required: Video URL (MP4, WebM, M3U8) -->
-  poster="poster.jpg"        <!-- Optional: Poster image URL -->
-  aspect-ratio="9/16">       <!-- Optional: CSS aspect ratio (default: 9/16) -->
+  src="video.mp4"
+  poster="poster.jpg"
+  aspect-ratio="9/16">
+</shorts-player>
+
+<!-- HLS streaming (adaptive bitrate) -->
+<shorts-player
+  src="stream.m3u8"
+  poster="poster.jpg"
+  aspect-ratio="16/9">
 </shorts-player>
 ```
+
+**Supported formats:**
+- **MP4/WebM** - Direct playback
+- **HLS (.m3u8)** - Adaptive streaming via HLS.js (Chrome/Firefox) or native (Safari)
 
 ### Methods
 
@@ -247,7 +261,7 @@ All core functionality and performance targets proven ✅
 
 ## 📊 Project Status
 
-### Completed: 127/194 tasks (65%)
+### Completed: 154/194 tasks (79%)
 
 **✅ Phase 0: Project Setup** (8/8 tasks - 100%)
 - Package.json, Playwright, examples, CSS
@@ -255,7 +269,7 @@ All core functionality and performance targets proven ✅
 **✅ Phase 1: Foundational Components** (24/24 tasks - 100%)
 - SHARED_TEMPLATE, VideoIntersectionManager, VideoPool
 
-**✅ Phase 2: User Story 1 MVP** (95/95 tasks - 100% COMPLETE)**
+**✅ Phase 2: User Story 1 MVP** (95/95 tasks - 100%)
 - Component lifecycle ✅
 - Poster support ✅
 - Video lifecycle ✅
@@ -263,9 +277,17 @@ All core functionality and performance targets proven ✅
 - Resource cleanup ✅
 - Public API ✅
 - Custom events ✅
-- **Performance testing ✅ (T118-T127 complete)**
+- Performance testing ✅ (60fps, 0% memory growth)
 
-**⏳ Phase 3: HLS Streaming** (~30 tasks)
+**✅ Phase 3: HLS Streaming** (27/30 tasks - 90% NEARLY COMPLETE)
+- HLS detection ✅ (Safari native, HLS.js support)
+- HLS.js integration ✅ (scroll-optimized config)
+- HLS cleanup ✅ (stopLoad, detachMedia, destroy)
+- Safari native HLS ✅ (direct src assignment)
+- Error handling ✅ (network/media error recovery)
+- Example page ✅ (hls-stream.html)
+- Cross-browser tests ⏳ (remaining)
+
 **⏳ Phase 4: Error Handling** (~20 tasks)
 **⏳ Phase 5: Final Polish** (~18 tasks)
 
