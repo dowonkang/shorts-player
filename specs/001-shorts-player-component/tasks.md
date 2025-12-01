@@ -105,52 +105,52 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Component Skeleton & Lifecycle
 
-- [ ] [T033] [P1] [US1] TEST: Write component registration test in tests/unit/shorts-player.spec.js
-- [ ] [T034] [P1] [US1] Verify test fails (RED) - ShortsPlayer not defined
-- [ ] [T035] [P1] [US1] IMPLEMENT: Create ShortsPlayer class extending HTMLElement in src/shorts-player.js
-- [ ] [T036] [P1] [US1] IMPLEMENT: Register custom element with customElements.define('shorts-player', ShortsPlayer)
-- [ ] [T037] [P1] [US1] TEST: Write test for observedAttributes - expects ['src', 'aspect-ratio', 'poster']
-- [ ] [T038] [P1] [US1] IMPLEMENT: Add static observedAttributes = ['src', 'aspect-ratio', 'poster']
-- [ ] [T039] [P1] [US1] TEST: Write test for constructor - initializes _initialized=false, _isPlaying=false
-- [ ] [T040] [P1] [US1] Verify test fails (RED)
-- [ ] [T041] [P1] [US1] IMPLEMENT: Add constructor with initial state (research.md:467-473)
-- [ ] [T042] [P1] [US1] Verify test passes (GREEN)
+- [X] [T033] [P1] [US1] TEST: Write component registration test in tests/unit/shorts-player.spec.js
+- [X] [T034] [P1] [US1] Verify test fails (RED) - ShortsPlayer not defined
+- [X] [T035] [P1] [US1] IMPLEMENT: Create ShortsPlayer class extending HTMLElement in src/shorts-player.js
+- [X] [T036] [P1] [US1] IMPLEMENT: Register custom element with customElements.define('shorts-player', ShortsPlayer)
+- [X] [T037] [P1] [US1] TEST: Write test for observedAttributes - expects ['src', 'aspect-ratio', 'poster']
+- [X] [T038] [P1] [US1] IMPLEMENT: Add static observedAttributes = ['src', 'aspect-ratio', 'poster']
+- [X] [T039] [P1] [US1] TEST: Write test for constructor - initializes _initialized=false, _isPlaying=false
+- [X] [T040] [P1] [US1] Verify test fails (RED)
+- [X] [T041] [P1] [US1] IMPLEMENT: Add constructor with initial state (research.md:467-473)
+- [X] [T042] [P1] [US1] Verify test passes (GREEN)
 
 ### connectedCallback - Template & Skeleton
 
-- [ ] [T043] [P1] [US1] TEST: Write test for connectedCallback - clones SHARED_TEMPLATE
-- [ ] [T044] [P1] [US1] Verify test fails (RED)
-- [ ] [T045] [P1] [US1] IMPLEMENT: Add connectedCallback() with template cloning (research.md:475-503)
-- [ ] [T046] [P1] [US1] TEST: Write test for CSS containment applied (style.contain = 'layout paint size')
-- [ ] [T047] [P1] [US1] IMPLEMENT: Apply CSS containment and aspect-ratio in connectedCallback()
-- [ ] [T048] [P1] [US1] TEST: Write test for aspect-ratio attribute handling (default: "9/16")
-- [ ] [T049] [P1] [US1] IMPLEMENT: Read aspect-ratio attribute and apply to style.aspectRatio
-- [ ] [T050] [P1] [US1] TEST: Write test for AbortController setup for event cleanup
-- [ ] [T051] [P1] [US1] IMPLEMENT: Create _abortController in connectedCallback() (research.md:491-497)
-- [ ] [T052] [P1] [US1] TEST: Write test for IntersectionObserver registration via VideoIntersectionManager
-- [ ] [T053] [P1] [US1] IMPLEMENT: Call VideoIntersectionManager.observe(this, this) in connectedCallback()
+- [X] [T043] [P1] [US1] TEST: Write test for connectedCallback - clones SHARED_TEMPLATE
+- [X] [T044] [P1] [US1] Verify test fails (RED)
+- [X] [T045] [P1] [US1] IMPLEMENT: Add connectedCallback() with template cloning (research.md:475-503)
+- [X] [T046] [P1] [US1] TEST: Write test for CSS containment applied (style.contain = 'layout paint size')
+- [X] [T047] [P1] [US1] IMPLEMENT: Apply CSS containment and aspect-ratio in connectedCallback()
+- [X] [T048] [P1] [US1] TEST: Write test for aspect-ratio attribute handling (default: "9/16")
+- [X] [T049] [P1] [US1] IMPLEMENT: Read aspect-ratio attribute and apply to style.aspectRatio
+- [X] [T050] [P1] [US1] TEST: Write test for AbortController setup for event cleanup
+- [X] [T051] [P1] [US1] IMPLEMENT: Create _abortController in connectedCallback() (research.md:491-497)
+- [X] [T052] [P1] [US1] TEST: Write test for IntersectionObserver registration via VideoIntersectionManager
+- [X] [T053] [P1] [US1] IMPLEMENT: Call VideoIntersectionManager.observe(this, this) in connectedCallback()
 
 ### disconnectedCallback - Cleanup
 
-- [ ] [T054] [P1] [US1] TEST: Write test for disconnectedCallback - aborts event listeners
-- [ ] [T055] [P1] [US1] Verify test fails (RED)
-- [ ] [T056] [P1] [US1] IMPLEMENT: Add disconnectedCallback() with queueMicrotask pattern (research.md:506-514)
-- [ ] [T057] [P1] [US1] TEST: Write test for cleanup on true removal (not DOM move)
-- [ ] [T058] [P1] [US1] IMPLEMENT: Check this.isConnected before cleanup
-- [ ] [T059] [P1] [US1] TEST: Write test for VideoIntersectionManager.unobserve() call
-- [ ] [T060] [P1] [US1] IMPLEMENT: Call VideoIntersectionManager.unobserve(this) in cleanup
+- [X] [T054] [P1] [US1] TEST: Write test for disconnectedCallback - aborts event listeners
+- [X] [T055] [P1] [US1] Verify test fails (RED)
+- [X] [T056] [P1] [US1] IMPLEMENT: Add disconnectedCallback() with queueMicrotask pattern (research.md:506-514)
+- [X] [T057] [P1] [US1] TEST: Write test for cleanup on true removal (not DOM move)
+- [X] [T058] [P1] [US1] IMPLEMENT: Check this.isConnected before cleanup
+- [X] [T059] [P1] [US1] TEST: Write test for VideoIntersectionManager.unobserve() call
+- [X] [T060] [P1] [US1] IMPLEMENT: Call VideoIntersectionManager.unobserve(this) in cleanup
 
 ### Poster Image Support
 
-- [ ] [T061] [P1] [US1] TEST: Write test for poster attribute - creates <img> element (tests/unit/poster.spec.js)
-- [ ] [T062] [P1] [US1] Verify test fails (RED)
-- [ ] [T063] [P1] [US1] IMPLEMENT: Add _loadPoster() method that creates HTMLImageElement
-- [ ] [T064] [P1] [US1] TEST: Write test for poster load event - fades in (opacity 0→1)
-- [ ] [T065] [P1] [US1] IMPLEMENT: Add load event listener with opacity transition (data-model.md:83-85)
-- [ ] [T066] [P1] [US1] TEST: Write test for poster error event - falls back to host background
-- [ ] [T067] [P1] [US1] IMPLEMENT: Add error event listener, remove poster on error (data-model.md:85)
-- [ ] [T068] [P1] [US1] TEST: Write test for poster z-index layering (poster over host background)
-- [ ] [T069] [P1] [US1] IMPLEMENT: Apply position:absolute and z-index:2 to poster element
+- [X] [T061] [P1] [US1] TEST: Write test for poster attribute - creates <img> element (tests/unit/poster.spec.js)
+- [X] [T062] [P1] [US1] Verify test fails (RED)
+- [X] [T063] [P1] [US1] IMPLEMENT: Add _loadPoster() method that creates HTMLImageElement
+- [X] [T064] [P1] [US1] TEST: Write test for poster load event - fades in (opacity 0→1)
+- [X] [T065] [P1] [US1] IMPLEMENT: Add load event listener with opacity transition (data-model.md:83-85)
+- [X] [T066] [P1] [US1] TEST: Write test for poster error event - falls back to host background
+- [X] [T067] [P1] [US1] IMPLEMENT: Add error event listener, remove poster on error (data-model.md:85)
+- [X] [T068] [P1] [US1] TEST: Write test for poster z-index layering (poster over host background)
+- [X] [T069] [P1] [US1] IMPLEMENT: Apply position:absolute and z-index:2 to poster element
 
 ### Video Element Lifecycle
 

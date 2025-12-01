@@ -44,24 +44,71 @@ class ShortsPlayer extends HTMLElement {
     // Cache DOM references
     this._container = this.querySelector('.shorts-player');
 
-    // Setup intersection observer (lazy video creation)
-    // TODO: Implement in next phase
-    // this.setupIntersectionObserver();
+    // Setup intersection observer (T053 - data-model.md:190-194)
+    if (typeof window !== 'undefined' && window.VideoIntersectionManager) {
+      window.VideoIntersectionManager.instance.observe(this, this);
+    }
 
-    // Load poster if present
-    // TODO: Implement in next phase
-    // this.loadPosterIfPresent();
+    // Load poster if present (T063 - data-model.md:83-85)
+    this._loadPosterIfPresent();
 
     this._initialized = true;
+  }
+
+  // T063: Load poster image if poster attribute exists
+  _loadPosterIfPresent() {
+    const posterUrl = this.getAttribute('poster');
+    if (!posterUrl) return;
+
+    // T063: Create HTMLImageElement (data-model.md:161-167)
+    const poster = document.createElement('img');
+    poster.className = 'shorts-player__poster';
+    poster.src = posterUrl;
+
+    // T069: Apply positioning and z-index
+    poster.style.position = 'absolute';
+    poster.style.width = '100%';
+    poster.style.height = '100%';
+    poster.style.objectFit = 'cover';
+    poster.style.opacity = '0';
+    poster.style.zIndex = '2';
+    poster.style.transition = 'opacity 200ms ease-out';
+
+    // T065: Fade in on load (data-model.md:83-85)
+    poster.addEventListener('load', () => {
+      poster.classList.add('loaded');
+      poster.style.opacity = '1';
+    }, { once: true, signal: this._abortController.signal });
+
+    // T067: Remove poster on error (data-model.md:85, 169-174)
+    poster.addEventListener('error', () => {
+      console.warn(`[ShortsPlayer] Failed to load poster: ${posterUrl}`);
+      if (poster.parentNode) {
+        poster.remove();
+      }
+      this._posterElement = null;
+    }, { once: true, signal: this._abortController.signal });
+
+    this.appendChild(poster);
+    this._posterElement = poster;
   }
 
   disconnectedCallback() {
     // Cleanup with microtask (handles DOM moves vs removals) (research.md:506-514)
     queueMicrotask(() => {
       if (!this.isConnected) {
-        this._abortController?.abort(); // Remove ALL listeners
-        // TODO: Implement full cleanup
-        // this._cleanupPlayer();
+        // T060: Unobserve from VideoIntersectionManager
+        if (typeof window !== 'undefined' && window.VideoIntersectionManager) {
+          window.VideoIntersectionManager.instance.unobserve(this);
+        }
+
+        // Abort all event listeners (T054)
+        this._abortController?.abort();
+
+        // TODO: Implement full video cleanup in later phase
+        // this._cleanupVideo();
+
+        this._initialized = false;
       }
     });
   }
