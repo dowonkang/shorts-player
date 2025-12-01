@@ -58,38 +58,40 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Shared Template (Light DOM)
 
-- [ ] [T009] [P1] [US1] TEST: Write test for SHARED_TEMPLATE creation at module level (tests/unit/shared-template.spec.js)
-- [ ] [T010] [P1] [US1] Verify test fails (RED) - SHARED_TEMPLATE doesn't exist yet
-- [ ] [T011] [P1] [US1] IMPLEMENT: Create SHARED_TEMPLATE constant in src/shorts-player.js (research.md:96-102)
-- [ ] [T012] [P1] [US1] Verify test passes (GREEN)
-- [ ] [T013] [P1] [US1] TEST: Write test for template cloning performance (<1ms per clone)
-- [ ] [T014] [P1] [US1] IMPLEMENT: Ensure cloneNode(true) used correctly
+- [X] [T009] [P1] [US1] TEST: Write test for SHARED_TEMPLATE creation at module level (tests/unit/shared-template.spec.js)
+- [X] [T010] [P1] [US1] Verify test fails (RED) - SHARED_TEMPLATE doesn't exist yet
+- [X] [T011] [P1] [US1] IMPLEMENT: Create SHARED_TEMPLATE constant in src/shorts-player.js (research.md:96-102)
+- [X] [T012] [P1] [US1] Verify test passes (GREEN)
+- [X] [T013] [P1] [US1] TEST: Write test for template cloning performance (<1ms per clone)
+- [X] [T014] [P1] [US1] IMPLEMENT: Ensure cloneNode(true) used correctly
 
 ### VideoIntersectionManager Singleton
 
-- [ ] [T015] [P1] [US1] TEST: Write singleton pattern test in tests/unit/intersection-manager.spec.js
-- [ ] [T016] [P1] [US1] Verify test fails (RED) - VideoIntersectionManager doesn't exist
-- [ ] [T017] [P1] [US1] IMPLEMENT: Create VideoIntersectionManager class in src/intersection-manager.js (research.md:153-198)
-- [ ] [T018] [P1] [US1] TEST: Write test for WeakMap component registration
-- [ ] [T019] [P1] [US1] IMPLEMENT: Add observe() and unobserve() methods (data-model.md:190-194)
-- [ ] [T020] [P1] [US1] TEST: Write test for intersection logic - >50% visible OR (tall AND >50% viewport) (data-model.md:196-218)
-- [ ] [T021] [P1] [US1] Verify test fails (RED)
-- [ ] [T022] [P1] [US1] IMPLEMENT: Add handleIntersection() with OR condition logic
-- [ ] [T023] [P1] [US1] Verify test passes (GREEN)
+- [X] [T015] [P1] [US1] TEST: Write singleton pattern test in tests/unit/intersection-manager.spec.js
+- [X] [T016] [P1] [US1] Verify test fails (RED) - VideoIntersectionManager doesn't exist
+- [X] [T017] [P1] [US1] IMPLEMENT: Create VideoIntersectionManager class in src/intersection-manager.js (research.md:153-198)
+- [X] [T018] [P1] [US1] TEST: Write test for WeakMap component registration
+- [X] [T019] [P1] [US1] IMPLEMENT: Add observe() and unobserve() methods (data-model.md:190-194)
+- [X] [T020] [P1] [US1] TEST: Write test for intersection logic - >50% visible OR (tall AND >50% viewport) (data-model.md:196-218)
+- [X] [T021] [P1] [US1] Verify test fails (RED)
+- [X] [T022] [P1] [US1] IMPLEMENT: Add handleIntersection() with OR condition logic
+- [X] [T023] [P1] [US1] Verify test passes (GREEN)
 
 ### VideoPool Singleton
 
-- [ ] [T024] [P1] [US1] TEST: Write VideoPool singleton test in tests/unit/video-pool.spec.js
-- [ ] [T025] [P1] [US1] Verify test fails (RED) - VideoPool doesn't exist
-- [ ] [T026] [P1] [US1] IMPLEMENT: Create VideoPool class in src/video-pool.js (research.md:323-358, data-model.md:221-254)
-- [ ] [T027] [P1] [US1] TEST: Write test for acquire() - returns video element with playsinline, muted, preload=none
-- [ ] [T028] [P1] [US1] IMPLEMENT: Add acquire() method with default attributes
-- [ ] [T029] [P1] [US1] TEST: Write test for release() - cleans src, calls load(), returns to pool
-- [ ] [T030] [P1] [US1] IMPLEMENT: Add release() method with aggressive cleanup (data-model.md:242-254)
-- [ ] [T031] [P1] [US1] TEST: Write test for pool size limit (maxSize: 5)
-- [ ] [T032] [P1] [US1] IMPLEMENT: Enforce maxSize in release() - discard if pool full
+- [X] [T024] [P1] [US1] TEST: Write VideoPool singleton test in tests/unit/video-pool.spec.js
+- [X] [T025] [P1] [US1] Verify test fails (RED) - VideoPool doesn't exist
+- [X] [T026] [P1] [US1] IMPLEMENT: Create VideoPool class in src/video-pool.js (research.md:323-358, data-model.md:221-254)
+- [X] [T027] [P1] [US1] TEST: Write test for acquire() - returns video element with playsinline, muted, preload=none
+- [X] [T028] [P1] [US1] IMPLEMENT: Add acquire() method with default attributes
+- [X] [T029] [P1] [US1] TEST: Write test for release() - cleans src, calls load(), returns to pool
+- [X] [T030] [P1] [US1] IMPLEMENT: Add release() method with aggressive cleanup (data-model.md:242-254)
+- [X] [T031] [P1] [US1] TEST: Write test for pool size limit (maxSize: 5)
+- [X] [T032] [P1] [US1] IMPLEMENT: Enforce maxSize in release() - discard if pool full
 
 **Success Criteria**: All singleton tests pass, template cloning <1ms, pool correctly manages 5 elements
+
+**Status**: ✅ COMPLETE - All Phase 1 tests passing across all browsers (Chrome, Firefox, Safari, Mobile Chrome, Mobile Safari)
 
 ---
 

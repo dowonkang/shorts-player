@@ -80,11 +80,12 @@
     </div>
   </div>
 
-  <!-- Component will be loaded here -->
+  <!-- Load dependencies and component -->
   <script type="module">
-    // Wait for component to load
-    // TODO: Import component when implemented
-    // import '../src/shorts-player.js';
+    // Import all modules
+    import '../src/intersection-manager.js';
+    import '../src/video-pool.js';
+    import '../src/shorts-player.js';
 
     const player = document.getElementById('player1');
     const status = document.getElementById('status');
