@@ -129,6 +129,118 @@ class ShortsPlayer extends HTMLElement {
   update() {
     // TODO: Implement attribute change handling
   }
+
+  // T083: Update play state based on visibility (called by VideoIntersectionManager)
+  updatePlayState(shouldPlay, entry) {
+    if (shouldPlay === this._isPlaying) {
+      return; // No state change
+    }
+
+    this._isPlaying = shouldPlay;
+    this._isVisible = shouldPlay; // Track visibility state
+
+    if (shouldPlay) {
+      // T091: Cancel cleanup timer on re-entry (scroll bounce)
+      if (this._cleanupTimer) {
+        clearTimeout(this._cleanupTimer);
+        this._cleanupTimer = null;
+      }
+
+      // T083: Create and play video when visible
+      if (!this._videoElement) {
+        this._createVideo();
+      } else {
+        // Resume existing video
+        this._videoElement.play().catch(err => {
+          console.warn('[ShortsPlayer] Play failed:', err.message);
+        });
+      }
+    } else {
+      // T087: Auto-pause when <50% visible
+      if (this._videoElement) {
+        this._videoElement.pause();
+      }
+
+      // T089: Schedule cleanup with 200ms grace period (data-model.md:90)
+      this._scheduleCleanup();
+    }
+  }
+
+  // T089: Schedule cleanup with grace period for scroll bounces
+  _scheduleCleanup() {
+    if (this._cleanupTimer) {
+      clearTimeout(this._cleanupTimer);
+    }
+
+    this._cleanupTimer = setTimeout(() => {
+      this._cleanupVideo();
+      this._cleanupTimer = null;
+    }, 200); // 200ms grace period
+  }
+
+  // Placeholder for cleanup (will be implemented in T092-T098)
+  _cleanupVideo() {
+    // TODO: Implement full video cleanup in next section
+    console.log('[ShortsPlayer] Cleanup scheduled (not yet implemented)');
+  }
+
+  // T072: Create video element from VideoPool (data-model.md:86-88)
+  _createVideo() {
+    if (this._videoElement) {
+      return this._videoElement; // Already created
+    }
+
+    // T070: Acquire video from pool
+    if (!window.VideoPool?.instance) {
+      console.error('[ShortsPlayer] VideoPool not available');
+      return null;
+    }
+
+    const video = window.VideoPool.instance.acquire();
+    video.className = 'shorts-player__video';
+
+    // T074: Assign src
+    const src = this.getAttribute('src');
+    if (src) {
+      video.src = src;
+    }
+
+    // T078: Apply video styles
+    video.style.position = 'absolute';
+    video.style.width = '100%';
+    video.style.height = '100%';
+    video.style.objectFit = 'cover';
+    video.style.opacity = '0';
+    video.style.zIndex = '3';
+    video.style.transition = 'opacity 200ms ease-out';
+
+    // T076: Listen for loadeddata event (data-model.md:88)
+    video.addEventListener('loadeddata', () => {
+      // T077: Add loaded class for fade-in
+      video.classList.add('loaded');
+      video.style.opacity = '1';
+
+      // T080: Remove poster after video starts playing (data-model.md:88, 160-164)
+      if (this._posterElement) {
+        setTimeout(() => {
+          if (this._posterElement && this._posterElement.parentNode) {
+            this._posterElement.remove();
+            this._posterElement = null;
+          }
+        }, 200); // Wait for fade transition
+      }
+
+      // Attempt to play
+      video.play().catch(err => {
+        console.warn('[ShortsPlayer] Auto-play prevented:', err.message);
+      });
+    }, { once: true, signal: this._abortController.signal });
+
+    this.appendChild(video);
+    this._videoElement = video;
+
+    return video;
+  }
 }
 
 // Register custom element

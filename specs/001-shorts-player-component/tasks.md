@@ -154,31 +154,31 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Video Element Lifecycle
 
-- [ ] [T070] [P1] [US1] TEST: Write test for _createVideo() - acquires from VideoPool
-- [ ] [T071] [P1] [US1] Verify test fails (RED)
-- [ ] [T072] [P1] [US1] IMPLEMENT: Add _createVideo() method calling VideoPool.acquire() (data-model.md:86-88)
-- [ ] [T073] [P1] [US1] TEST: Write test for video src assignment (MP4 file)
-- [ ] [T074] [P1] [US1] IMPLEMENT: Set video.src from this.getAttribute('src')
-- [ ] [T075] [P1] [US1] TEST: Write test for loadeddata event - triggers play()
-- [ ] [T076] [P1] [US1] IMPLEMENT: Add loadeddata listener that calls video.play() (data-model.md:88)
-- [ ] [T077] [P1] [US1] TEST: Write test for video fade in when playing (opacity 0→1)
-- [ ] [T078] [P1] [US1] IMPLEMENT: Add class 'loaded' to video on loadeddata event
-- [ ] [T079] [P1] [US1] TEST: Write test for poster fade out when video plays
-- [ ] [T080] [P1] [US1] IMPLEMENT: Remove poster element after video starts playing (data-model.md:88, 160-164)
+- [X] [T070] [P1] [US1] TEST: Write test for _createVideo() - acquires from VideoPool
+- [X] [T071] [P1] [US1] Verify test fails (RED)
+- [X] [T072] [P1] [US1] IMPLEMENT: Add _createVideo() method calling VideoPool.acquire() (data-model.md:86-88)
+- [X] [T073] [P1] [US1] TEST: Write test for video src assignment (MP4 file)
+- [X] [T074] [P1] [US1] IMPLEMENT: Set video.src from this.getAttribute('src')
+- [X] [T075] [P1] [US1] TEST: Write test for loadeddata event - triggers play()
+- [X] [T076] [P1] [US1] IMPLEMENT: Add loadeddata listener that calls video.play() (data-model.md:88)
+- [X] [T077] [P1] [US1] TEST: Write test for video fade in when playing (opacity 0→1)
+- [X] [T078] [P1] [US1] IMPLEMENT: Add class 'loaded' to video on loadeddata event
+- [X] [T079] [P1] [US1] TEST: Write test for poster fade out when video plays
+- [X] [T080] [P1] [US1] IMPLEMENT: Remove poster element after video starts playing (data-model.md:88, 160-164)
 
 ### Auto-Play/Pause Logic
 
-- [ ] [T081] [P1] [US1] TEST: Write integration test for auto-play when >50% visible (tests/integration/auto-play.spec.js)
-- [ ] [T082] [P1] [US1] Verify test fails (RED)
-- [ ] [T083] [P1] [US1] IMPLEMENT: Add updatePlayState(shouldPlay) method that creates/plays video
-- [ ] [T084] [P1] [US1] TEST: Write test for auto-play when video taller than viewport AND >50% viewport
-- [ ] [T085] [P1] [US1] Verify test passes with OR logic from VideoIntersectionManager
-- [ ] [T086] [P1] [US1] TEST: Write test for auto-pause when <50% visible
-- [ ] [T087] [P1] [US1] IMPLEMENT: Call video.pause() in updatePlayState(false)
-- [ ] [T088] [P1] [US1] TEST: Write test for cleanup delay (200ms grace period)
-- [ ] [T089] [P1] [US1] IMPLEMENT: Add _scheduleCleanup() with 200ms setTimeout (data-model.md:90)
-- [ ] [T090] [P1] [US1] TEST: Write test for cleanup cancellation on re-entry (scroll bounce)
-- [ ] [T091] [P1] [US1] IMPLEMENT: Clear _cleanupTimer in updatePlayState(true)
+- [X] [T081] [P1] [US1] TEST: Write integration test for auto-play when >50% visible (tests/integration/auto-play.spec.js)
+- [X] [T082] [P1] [US1] Verify test fails (RED)
+- [X] [T083] [P1] [US1] IMPLEMENT: Add updatePlayState(shouldPlay) method that creates/plays video
+- [X] [T084] [P1] [US1] TEST: Write test for auto-play when video taller than viewport AND >50% viewport
+- [X] [T085] [P1] [US1] Verify test passes with OR logic from VideoIntersectionManager
+- [X] [T086] [P1] [US1] TEST: Write test for auto-pause when <50% visible
+- [X] [T087] [P1] [US1] IMPLEMENT: Call video.pause() in updatePlayState(false)
+- [X] [T088] [P1] [US1] TEST: Write test for cleanup delay (200ms grace period)
+- [X] [T089] [P1] [US1] IMPLEMENT: Add _scheduleCleanup() with 200ms setTimeout (data-model.md:90)
+- [X] [T090] [P1] [US1] TEST: Write test for cleanup cancellation on re-entry (scroll bounce)
+- [X] [T091] [P1] [US1] IMPLEMENT: Clear _cleanupTimer in updatePlayState(true)
 
 ### Resource Cleanup
 
