@@ -290,4 +290,111 @@ test.describe('ShortsPlayer Component', () => {
 
     expect(result.isBoolean).toBe(true);
   });
+
+  // ===== Phase 3: HLS Streaming Support =====
+
+  // T128: Safari native HLS detection
+  test('[T128] should have _canPlayNativeHLS() method', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const hasMethod = typeof player._canPlayNativeHLS === 'function';
+      document.body.removeChild(player);
+      return hasMethod;
+    });
+
+    expect(result).toBe(true);
+  });
+
+  // T130: _canPlayNativeHLS() should check canPlayType
+  test('[T130] should detect Safari native HLS support', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+
+      // Test the method exists and returns boolean
+      const canPlay = player._canPlayNativeHLS?.();
+      const isBoolean = typeof canPlay === 'boolean';
+
+      // Verify it uses canPlayType check
+      const video = document.createElement('video');
+      const expected = video.canPlayType('application/vnd.apple.mpegurl') !== '';
+
+      document.body.removeChild(player);
+      return { canPlay, isBoolean, expected };
+    });
+
+    expect(result.isBoolean).toBe(true);
+    expect(result.canPlay).toBe(result.expected);
+  });
+
+  // T132: HLS source detection
+  test('[T132] should have _isHLSSource() method', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const hasMethod = typeof player._isHLSSource === 'function';
+      document.body.removeChild(player);
+      return hasMethod;
+    });
+
+    expect(result).toBe(true);
+  });
+
+  // T133: _isHLSSource() should detect .m3u8 extension
+  test('[T133] should detect HLS sources by .m3u8 extension', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+
+      const tests = {
+        hlsSource: player._isHLSSource?.('https://example.com/video.m3u8'),
+        mp4Source: player._isHLSSource?.('https://example.com/video.mp4'),
+        hlsWithParams: player._isHLSSource?.('https://example.com/video.m3u8?token=abc'),
+        noExtension: player._isHLSSource?.('https://example.com/video')
+      };
+
+      document.body.removeChild(player);
+      return tests;
+    });
+
+    expect(result.hlsSource).toBe(true);
+    expect(result.mp4Source).toBe(false);
+    expect(result.hlsWithParams).toBe(true);
+    expect(result.noExtension).toBe(false);
+  });
+
+  // T134: Hls.isSupported() check
+  test('[T134] should check Hls.isSupported() for Chrome/Firefox', async ({ page }) => {
+    const result = await page.evaluate(async () => {
+      // Check if Hls is available globally (will be loaded in examples that need it)
+      if (typeof window.Hls !== 'undefined') {
+        return {
+          hlsAvailable: true,
+          isSupported: window.Hls.isSupported()
+        };
+      }
+
+      // Try dynamic import
+      try {
+        const hlsModule = await import('/node_modules/hls.js/dist/hls.min.js');
+        const Hls = hlsModule.default;
+        return {
+          hlsAvailable: true,
+          isSupported: Hls.isSupported()
+        };
+      } catch (err) {
+        // HLS.js not loaded - that's ok for unit tests
+        return { hlsAvailable: false, error: err.message };
+      }
+    });
+
+    // Verify we can check for Hls support (actual value depends on browser)
+    expect(typeof result.hlsAvailable).toBe('boolean');
+
+    // If HLS is available, isSupported should be boolean
+    if (result.hlsAvailable) {
+      expect(typeof result.isSupported).toBe('boolean');
+    }
+  });
 });

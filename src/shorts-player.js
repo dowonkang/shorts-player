@@ -180,6 +180,22 @@ class ShortsPlayer extends HTMLElement {
     return this._videoElement?.readyState >= 2;
   }
 
+  // ===== Phase 3: HLS Detection Methods =====
+
+  // T130: Safari native HLS detection (research.md:214)
+  _canPlayNativeHLS() {
+    const video = document.createElement('video');
+    return video.canPlayType('application/vnd.apple.mpegurl') !== '';
+  }
+
+  // T133: HLS source detection by .m3u8 extension
+  _isHLSSource(src) {
+    if (!src) return false;
+    // Remove query parameters and check extension
+    const urlWithoutParams = src.split('?')[0];
+    return urlWithoutParams.endsWith('.m3u8');
+  }
+
   // T083: Update play state based on visibility (called by VideoIntersectionManager)
   updatePlayState(shouldPlay, entry) {
     if (shouldPlay === this._isPlaying) {
