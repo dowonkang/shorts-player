@@ -196,6 +196,110 @@ class ShortsPlayer extends HTMLElement {
     return urlWithoutParams.endsWith('.m3u8');
   }
 
+  // T138/T140/T142/T144: Initialize HLS.js (research.md:231-256)
+  async _initHLS(video, src) {
+    // Dynamically import HLS.js only when needed
+    let Hls;
+    try {
+      if (typeof window.Hls !== 'undefined') {
+        Hls = window.Hls;
+      } else {
+        const hlsModule = await import('hls.js');
+        Hls = hlsModule.default;
+      }
+    } catch (err) {
+      console.error('[ShortsPlayer] HLS.js not available:', err);
+      this.dispatchEvent(new CustomEvent('error', {
+        bubbles: true,
+        detail: {
+          type: 'hls',
+          message: 'HLS.js library not available'
+        }
+      }));
+      return;
+    }
+
+    if (!Hls.isSupported()) {
+      console.warn('[ShortsPlayer] HLS not supported in this browser');
+      return;
+    }
+
+    // T138: Create HLS instance with scroll-optimized config (research.md:231-256)
+    const hls = new Hls({
+      debug: false,
+      enableWorker: true,              // Offload parsing to Web Worker
+
+      // ABR - Conservative for mobile
+      startLevel: -1,                  // Auto-select (usually lowest)
+      capLevelToPlayerSize: true,      // Match quality to player dimensions
+
+      // Buffer - Aggressive for scroll
+      maxBufferLength: 10,             // Only 10 seconds ahead
+      maxMaxBufferLength: 20,          // Hard cap at 20 seconds
+      backBufferLength: 5,             // Minimal back buffer
+
+      // Bandwidth - Start conservative
+      abrEwmaDefaultEstimate: 500000,  // Start at 500kbps
+      abrBandWidthFactor: 0.7,         // Use 70% of estimated bandwidth
+
+      // Loading
+      startFragPrefetch: false,        // Don't prefetch (save bandwidth)
+      testBandwidth: false,            // Don't test on startup
+
+      // Limits
+      maxBufferSize: 30 * 1000 * 1000, // 30MB buffer limit
+    });
+
+    // T140: Load source and attach media
+    hls.loadSource(src);
+    hls.attachMedia(video);
+
+    // T142: Listen for MANIFEST_PARSED event
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      // Manifest loaded, ready to play
+      video.play().catch(err => {
+        console.warn('[ShortsPlayer] HLS auto-play prevented:', err.message);
+      });
+    });
+
+    // T144: Error handling (contracts/component-api.md:373-402)
+    hls.on(Hls.Events.ERROR, (event, data) => {
+      if (data.fatal) {
+        let message = 'HLS playback error';
+
+        switch (data.type) {
+          case Hls.ErrorTypes.NETWORK_ERROR:
+            message = 'HLS network error';
+            // Try to recover
+            hls.startLoad();
+            break;
+          case Hls.ErrorTypes.MEDIA_ERROR:
+            message = 'HLS media error';
+            // Try to recover
+            hls.recoverMediaError();
+            break;
+          default:
+            message = 'HLS fatal error';
+            // Cannot recover
+            hls.destroy();
+            this._hlsInstance = null;
+            break;
+        }
+
+        this.dispatchEvent(new CustomEvent('error', {
+          bubbles: true,
+          detail: {
+            type: 'hls',
+            message,
+            hlsError: data
+          }
+        }));
+      }
+    });
+
+    this._hlsInstance = hls;
+  }
+
   // T083: Update play state based on visibility (called by VideoIntersectionManager)
   updatePlayState(shouldPlay, entry) {
     if (shouldPlay === this._isPlaying) {
@@ -258,8 +362,21 @@ class ShortsPlayer extends HTMLElement {
     }, 200); // 200ms grace period
   }
 
-  // T092-T098: Full video cleanup (data-model.md:343-353)
+  // T092-T098, T145-T150: Full video cleanup (data-model.md:343-353, research.md:262-289)
   _cleanupVideo() {
+    // T145-T147: HLS cleanup MUST happen before video cleanup (research.md:269-275)
+    if (this._hlsInstance) {
+      try {
+        this._hlsInstance.stopLoad();       // Stop loading fragments
+        this._hlsInstance.detachMedia();    // Detach from video element
+        this._hlsInstance.destroy();        // Destroy HLS instance
+      } catch (err) {
+        console.warn('[ShortsPlayer] HLS cleanup error:', err);
+      }
+      // T149: Nullify HLS instance reference
+      this._hlsInstance = null;
+    }
+
     if (!this._videoElement) {
       return; // Nothing to clean up
     }
@@ -304,10 +421,24 @@ class ShortsPlayer extends HTMLElement {
     const video = window.VideoPool.instance.acquire();
     video.className = 'shorts-player__video';
 
-    // T074: Assign src
+    // T135: Conditional HLS initialization (research.md:212-216)
     const src = this.getAttribute('src');
     if (src) {
-      video.src = src;
+      if (this._isHLSSource(src)) {
+        // HLS source detected
+        if (this._canPlayNativeHLS()) {
+          // T152/T154: Safari native HLS - direct src assignment
+          video.src = src;
+        } else {
+          // T138/T140: Chrome/Firefox - use HLS.js (fire-and-forget async)
+          this._initHLS(video, src).catch(err => {
+            console.error('[ShortsPlayer] HLS initialization failed:', err);
+          });
+        }
+      } else {
+        // T074: Regular MP4/WebM - direct src assignment
+        video.src = src;
+      }
     }
 
     // T078: Apply video styles
