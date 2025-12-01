@@ -82,7 +82,7 @@ test.describe('Auto-Play/Pause Integration', () => {
 
   // T086: Auto-pause when <50% visible
   test('[T086] should auto-pause when scrolled out of view', async ({ page }) => {
-    const player = page.locator('#test-player');
+    const player = page.locator('#player-0');
 
     // Scroll into view
     await player.scrollIntoViewIfNeeded();
@@ -102,7 +102,7 @@ test.describe('Auto-Play/Pause Integration', () => {
 
   // T088: Cleanup delay (200ms grace period)
   test('[T088] should delay cleanup for 200ms', async ({ page }) => {
-    const player = page.locator('#test-player');
+    const player = page.locator('#player-1');
 
     // Scroll into view and play
     await player.scrollIntoViewIfNeeded();
@@ -126,7 +126,7 @@ test.describe('Auto-Play/Pause Integration', () => {
 
   // T090: Cleanup cancellation on re-entry
   test('[T090] should cancel cleanup on scroll bounce', async ({ page }) => {
-    const player = page.locator('#test-player');
+    const player = page.locator('#player-2');
 
     // Scroll into view
     await player.scrollIntoViewIfNeeded();
