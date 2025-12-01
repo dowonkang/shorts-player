@@ -216,4 +216,78 @@ test.describe('ShortsPlayer Component', () => {
     expect(result.initiallyObserving).toBe(true);
     expect(result.finallyObserving).toBe(false);
   });
+
+  // T099: play() method
+  test('[T099] should have play() method that returns Promise', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      player.setAttribute('src', 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAABhtZGF0');
+      document.body.appendChild(player);
+
+      const hasMethod = typeof player.play === 'function';
+      const result = player.play();
+      const returnsPromise = result instanceof Promise;
+
+      document.body.removeChild(player);
+      return { hasMethod, returnsPromise };
+    });
+
+    expect(result.hasMethod).toBe(true);
+    expect(result.returnsPromise).toBe(true);
+  });
+
+  // T102: pause() method
+  test('[T102] should have pause() method', async ({ page }) => {
+    const hasMethod = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const has = typeof player.pause === 'function';
+      document.body.removeChild(player);
+      return has;
+    });
+
+    expect(hasMethod).toBe(true);
+  });
+
+  // T104: reload() method
+  test('[T104] should have reload() method', async ({ page }) => {
+    const hasMethod = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const has = typeof player.reload === 'function';
+      document.body.removeChild(player);
+      return has;
+    });
+
+    expect(hasMethod).toBe(true);
+  });
+
+  // T106: playing getter
+  test('[T106] should have playing getter returning boolean', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const playing = player.playing;
+      const isBoolean = typeof playing === 'boolean';
+      document.body.removeChild(player);
+      return { playing, isBoolean };
+    });
+
+    expect(result.isBoolean).toBe(true);
+    expect(result.playing).toBe(false);
+  });
+
+  // T108: loaded getter
+  test('[T108] should have loaded getter', async ({ page }) => {
+    const result = await page.evaluate(() => {
+      const player = document.createElement('shorts-player');
+      document.body.appendChild(player);
+      const loaded = player.loaded;
+      const isBoolean = typeof loaded === 'boolean';
+      document.body.removeChild(player);
+      return { loaded, isBoolean };
+    });
+
+    expect(result.isBoolean).toBe(true);
+  });
 });

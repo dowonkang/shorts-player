@@ -130,6 +130,46 @@ class ShortsPlayer extends HTMLElement {
     // TODO: Implement attribute change handling
   }
 
+  // T101: Public API - play() method (contracts/component-api.md:219-248)
+  play() {
+    if (!this._videoElement) {
+      this._createVideo();
+    }
+
+    if (this._videoElement) {
+      return this._videoElement.play();
+    }
+
+    return Promise.reject(new Error('Video element not available'));
+  }
+
+  // T103: Public API - pause() method (contracts/component-api.md:250-273)
+  pause() {
+    if (this._videoElement) {
+      this._videoElement.pause();
+    }
+  }
+
+  // T105: Public API - reload() method (contracts/component-api.md:275-295)
+  reload() {
+    this._cleanupVideo();
+
+    // Recreate video if currently visible
+    if (this._isVisible) {
+      this._createVideo();
+    }
+  }
+
+  // T107: Read-only property - playing (contracts/component-api.md:176-195)
+  get playing() {
+    return this._isPlaying;
+  }
+
+  // T109: Read-only property - loaded (contracts/component-api.md:197-216)
+  get loaded() {
+    return this._videoElement?.readyState >= 2;
+  }
+
   // T083: Update play state based on visibility (called by VideoIntersectionManager)
   updatePlayState(shouldPlay, entry) {
     if (shouldPlay === this._isPlaying) {
@@ -178,10 +218,35 @@ class ShortsPlayer extends HTMLElement {
     }, 200); // 200ms grace period
   }
 
-  // Placeholder for cleanup (will be implemented in T092-T098)
+  // T092-T098: Full video cleanup (data-model.md:343-353)
   _cleanupVideo() {
-    // TODO: Implement full video cleanup in next section
-    console.log('[ShortsPlayer] Cleanup scheduled (not yet implemented)');
+    if (!this._videoElement) {
+      return; // Nothing to clean up
+    }
+
+    const video = this._videoElement;
+
+    // T092: Pause video
+    video.pause();
+
+    // T092: Clear src and release media buffers
+    video.removeAttribute('src');
+    video.src = '';
+    video.load(); // CRITICAL: releases media buffers
+
+    // T095: Return video to pool (data-model.md:250-256)
+    if (window.VideoPool?.instance) {
+      window.VideoPool.instance.release(video);
+    }
+
+    // Remove from DOM
+    if (video.parentNode) {
+      video.remove();
+    }
+
+    // T097: Nullify references
+    this._videoElement = null;
+    this._isPlaying = false;
   }
 
   // T072: Create video element from VideoPool (data-model.md:86-88)

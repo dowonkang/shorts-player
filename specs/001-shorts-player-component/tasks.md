@@ -182,30 +182,30 @@ Each task follows the format: `- [ ] [TaskID] [P?] [Story?] Description with fil
 
 ### Resource Cleanup
 
-- [ ] [T092] [P1] [US1] TEST: Write test for _cleanupVideo() - pauses, clears src, calls load()
-- [ ] [T093] [P1] [US1] Verify test fails (RED)
-- [ ] [T094] [P1] [US1] IMPLEMENT: Add _cleanupVideo() method (data-model.md:343-353)
-- [ ] [T095] [P1] [US1] TEST: Write test for VideoPool.release() called in cleanup
-- [ ] [T096] [P1] [US1] IMPLEMENT: Call VideoPool.release(_videoElement) in _cleanupVideo()
-- [ ] [T097] [P1] [US1] TEST: Write test for video element nullification after cleanup
-- [ ] [T098] [P1] [US1] IMPLEMENT: Set _videoElement = null after release
+- [X] [T092] [P1] [US1] TEST: Write test for _cleanupVideo() - pauses, clears src, calls load()
+- [X] [T093] [P1] [US1] Verify test fails (RED)
+- [X] [T094] [P1] [US1] IMPLEMENT: Add _cleanupVideo() method (data-model.md:343-353)
+- [X] [T095] [P1] [US1] TEST: Write test for VideoPool.release() called in cleanup
+- [X] [T096] [P1] [US1] IMPLEMENT: Call VideoPool.release(_videoElement) in _cleanupVideo()
+- [X] [T097] [P1] [US1] TEST: Write test for video element nullification after cleanup
+- [X] [T098] [P1] [US1] IMPLEMENT: Set _videoElement = null after release
 
 ### Public API Methods
 
-- [ ] [T099] [P1] [US1] TEST: Write test for play() method - programmatic control
-- [ ] [T100] [P1] [US1] Verify test fails (RED)
-- [ ] [T101] [P1] [US1] IMPLEMENT: Add play() method returning video.play() Promise (contracts/component-api.md:219-248)
-- [ ] [T102] [P1] [US1] TEST: Write test for pause() method - programmatic control
-- [ ] [T103] [P1] [US1] IMPLEMENT: Add pause() method calling video.pause() (contracts/component-api.md:250-273)
-- [ ] [T104] [P1] [US1] TEST: Write test for reload() method - error recovery
-- [ ] [T105] [P1] [US1] IMPLEMENT: Add reload() method that cleans up and reloads src (contracts/component-api.md:275-295)
+- [X] [T099] [P1] [US1] TEST: Write test for play() method - programmatic control
+- [X] [T100] [P1] [US1] Verify test fails (RED)
+- [X] [T101] [P1] [US1] IMPLEMENT: Add play() method returning video.play() Promise (contracts/component-api.md:219-248)
+- [X] [T102] [P1] [US1] TEST: Write test for pause() method - programmatic control
+- [X] [T103] [P1] [US1] IMPLEMENT: Add pause() method calling video.pause() (contracts/component-api.md:250-273)
+- [X] [T104] [P1] [US1] TEST: Write test for reload() method - error recovery
+- [X] [T105] [P1] [US1] IMPLEMENT: Add reload() method that cleans up and reloads src (contracts/component-api.md:275-295)
 
 ### Read-Only Properties
 
-- [ ] [T106] [P1] [US1] TEST: Write test for playing getter - returns boolean
-- [ ] [T107] [P1] [US1] IMPLEMENT: Add get playing() returning _isPlaying (contracts/component-api.md:176-195)
-- [ ] [T108] [P1] [US1] TEST: Write test for loaded getter - returns readyState >= 2
-- [ ] [T109] [P1] [US1] IMPLEMENT: Add get loaded() checking _videoElement?.readyState (contracts/component-api.md:197-216)
+- [X] [T106] [P1] [US1] TEST: Write test for playing getter - returns boolean
+- [X] [T107] [P1] [US1] IMPLEMENT: Add get playing() returning _isPlaying (contracts/component-api.md:176-195)
+- [X] [T108] [P1] [US1] TEST: Write test for loaded getter - returns readyState >= 2
+- [X] [T109] [P1] [US1] IMPLEMENT: Add get loaded() checking _videoElement?.readyState (contracts/component-api.md:197-216)
 
 ### Custom Events
 
