@@ -27,6 +27,41 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   vim \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install Playwright system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  # Core browser dependencies
+  libnspr4 \
+  libnss3 \
+  libdbus-1-3 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libxkbcommon0 \
+  libatspi2.0-0 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libasound2 \
+  # Additional WebKit dependencies
+  libwoff1 \
+  libopus0 \
+  libwebpdemux2 \
+  libharfbuzz-icu0 \
+  libepoxy0 \
+  libenchant-2-2 \
+  libsecret-1-0 \
+  libhyphen0 \
+  libwayland-server0 \
+  libwayland-egl1 \
+  libwayland-client0 \
+  libmanette-0.2-0 \
+  libdrm2 \
+  libgles2 \
+  libx264-164 \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Ensure default node user has access to /usr/local/share
 RUN mkdir -p /usr/local/share/npm-global && \
   chown -R node:node /usr/local/share
